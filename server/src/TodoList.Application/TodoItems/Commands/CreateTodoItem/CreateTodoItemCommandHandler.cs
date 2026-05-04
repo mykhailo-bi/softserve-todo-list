@@ -6,9 +6,9 @@ namespace TodoList.Application.TodoItems.Commands.CreateTodoItem;
 
 public sealed class CreateTodoItemCommandHandler : IRequestHandler<CreateTodoItemCommand, Guid>
 {
-    private readonly ITodoItemRepository _todoItemRepository;
+    private readonly IRepository<TodoItem> _todoItemRepository;
 
-    public CreateTodoItemCommandHandler(ITodoItemRepository todoItemRepository)
+    public CreateTodoItemCommandHandler(IRepository<TodoItem> todoItemRepository)
     {
         _todoItemRepository = todoItemRepository;
     }

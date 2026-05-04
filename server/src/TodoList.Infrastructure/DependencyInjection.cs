@@ -3,6 +3,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using TodoList.Application.Abstractions.Persistence;
+using TodoList.Domain.Entities;
 using TodoList.Infrastructure.Identity;
 using TodoList.Infrastructure.Persistence;
 using TodoList.Infrastructure.Persistence.Repositories;
@@ -29,7 +30,7 @@ public static class DependencyInjection
             .AddRoles<IdentityRole<Guid>>()
             .AddEntityFrameworkStores<ApplicationDbContext>();
 
-        services.AddScoped<ITodoItemRepository, TodoItemRepository>();
+        services.AddScoped<IRepository<TodoItem>, TodoItemRepository>();
 
         return services;
     }

@@ -20,7 +20,7 @@ public class CreateTodoItemCommandHandlerTests
         Assert.Single(repository.Items);
     }
 
-    private sealed class InMemoryTodoItemRepository : ITodoItemRepository
+    private sealed class InMemoryTodoItemRepository : IRepository<TodoItem>
     {
         public List<TodoItem> Items { get; } = new();
 

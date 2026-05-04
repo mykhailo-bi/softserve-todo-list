@@ -1,6 +1,8 @@
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using TodoList.Application.TodoItems.Commands.CreateTodoItem;
+using TodoList.Application.TodoItems.Commands.GetTodoItems;
+using TodoList.Domain.Entities;
 
 namespace TodoList.API.Controllers;
 
@@ -13,6 +15,13 @@ public class TodoItemsController : ControllerBase
     public TodoItemsController(ISender sender)
     {
         _sender = sender;
+    }
+
+    [HttpGet]
+    public async Task<ActionResult<IEnumerable<TodoItem>>> GetAll(GetTodoItemsCommand command, CancellationToken cancellationToken)
+    {
+        var items = await _sender.Send(command, cancellationToken);
+        return Ok(items);
     }
 
     [HttpPost]
