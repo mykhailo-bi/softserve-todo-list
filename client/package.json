@@ -3,10 +3,10 @@
   "version": "0.0.0",
   "scripts": {
     "ng": "ng",
-    "start": "ng serve",
-    "build": "ng build",
-    "watch": "ng build --watch --configuration development",
-    "test": "jest --passWithNoTests"
+    "start": "dotenv -e ../.env -- ng serve",
+    "build": "dotenv -e ../.env -- ng build",
+    "watch": "dotenv -e ../.env -- ng build --watch --configuration development",
+    "test": "dotenv -e ../.env -- jest --passWithNoTests"
   },
   "private": true,
   "packageManager": "npm@11.12.0",
@@ -29,6 +29,7 @@
     "@angular/cli": "^21.2.8",
     "@angular/compiler-cli": "^21.2.0",
     "@types/jest": "^30.0.0",
+    "dotenv-cli": "^8.0.0",
     "jest": "^30.3.0",
     "jest-environment-jsdom": "^30.3.0",
     "jest-preset-angular": "^16.1.4",
