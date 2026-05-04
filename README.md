@@ -36,7 +36,7 @@ dotnet run --project src/TodoList.API
 
 If `dotnet ef` is not installed locally, install it first with `dotnet tool install --global dotnet-ef`.
 
-The API starts with OpenAPI in development mode.
+The API serves Swagger UI in development mode at `http://localhost:5097/swagger`.
 
 ### Client
 
