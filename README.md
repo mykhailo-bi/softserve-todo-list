@@ -67,8 +67,7 @@ The client runs at `http://localhost:4200/`.
 - **Angular** (*React*), **NgRx (Store/Effects)** (*Redux (Redux Toolkit)*)  
 - AntDesign/**Angular Material** (*MUI*) (optional)  
 - Jest  
-- .NET 9.0 (Backend)  
-- ASP.NET Identity
+- .NET 9.0 (Backend)
 - EF Core  
 - MediatR + CQRS  
 - N-layer architecture  
