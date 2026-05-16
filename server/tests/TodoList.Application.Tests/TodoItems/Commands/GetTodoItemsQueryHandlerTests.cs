@@ -1,23 +1,23 @@
 using TodoList.Application.Abstractions.Persistence;
-using TodoList.Application.TodoItems.Commands.CreateTodoItem;
+using TodoList.Application.TodoItems.Commands.GetTodoItems;
 using TodoList.Domain.Entities;
 
 namespace TodoList.Application.Tests.TodoItems.Commands;
 
-public class CreateTodoItemCommandHandlerTests
+public class GetTodoItemsQueryHandlerTests
 {
     [Fact]
-    public async Task Handle_ShouldCreateItem_WhenTitleIsValid()
+    public async Task Handle_ShouldReturnAllItems_WhenItemsExist()
     {
         var repository = new InMemoryTodoItemRepository();
-        var handler = new CreateTodoItemCommandHandler(repository);
+        repository.Items.Add(new TodoItem("First", null, null));
+        repository.Items.Add(new TodoItem("Second", "Description", DateTimeOffset.UtcNow.AddDays(1)));
 
-        var result = await handler.Handle(
-            new CreateTodoItemCommand("Implement backend scaffold", "Initial CQRS command", DateTimeOffset.UtcNow.AddDays(1)),
-            CancellationToken.None);
+        var handler = new GetTodoItemsQueryHandler(repository);
 
-        Assert.NotEqual(Guid.Empty, result);
-        Assert.Single(repository.Items);
+        var result = await handler.Handle(new GetTodoItemsQuery(), CancellationToken.None);
+
+        Assert.Equal(2, result.Count());
     }
 
     private sealed class InMemoryTodoItemRepository : IRepository<TodoItem>

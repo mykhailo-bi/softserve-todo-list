@@ -1,28 +1,31 @@
 using TodoList.Application.Abstractions.Persistence;
-using TodoList.Application.TodoItems.Commands.CreateTodoItem;
+using TodoList.Application.TodoItems.Commands.DeleteTodoItem;
 using TodoList.Domain.Entities;
 
 namespace TodoList.Application.Tests.TodoItems.Commands;
 
-public class CreateTodoItemCommandHandlerTests
+public class DeleteTodoItemCommandHandlerTests
 {
     [Fact]
-    public async Task Handle_ShouldCreateItem_WhenTitleIsValid()
+    public async Task Handle_ShouldRemoveItem_WhenItemExists()
     {
         var repository = new InMemoryTodoItemRepository();
-        var handler = new CreateTodoItemCommandHandler(repository);
+        var item = new TodoItem("Title", null, null);
+        repository.Items.Add(item);
 
-        var result = await handler.Handle(
-            new CreateTodoItemCommand("Implement backend scaffold", "Initial CQRS command", DateTimeOffset.UtcNow.AddDays(1)),
-            CancellationToken.None);
+        var handler = new DeleteTodoItemCommandHandler(repository);
 
-        Assert.NotEqual(Guid.Empty, result);
-        Assert.Single(repository.Items);
+        await handler.Handle(new DeleteTodoItemCommand(item.Id), CancellationToken.None);
+
+        Assert.Empty(repository.Items);
+        Assert.Equal(1, repository.SaveChangesCalls);
     }
 
     private sealed class InMemoryTodoItemRepository : IRepository<TodoItem>
     {
         public List<TodoItem> Items { get; } = new();
+
+        public int SaveChangesCalls { get; private set; }
 
         public Task<IEnumerable<TodoItem>> GetAllAsync(CancellationToken cancellationToken)
         {
@@ -48,6 +51,7 @@ public class CreateTodoItemCommandHandlerTests
 
         public Task<int> SaveChangesAsync(CancellationToken cancellationToken)
         {
+            SaveChangesCalls++;
             return Task.FromResult(1);
         }
     }

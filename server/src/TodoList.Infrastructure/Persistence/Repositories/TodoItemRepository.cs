@@ -33,6 +33,12 @@ public class TodoItemRepository : IRepository<TodoItem>
         return _dbContext.TodoItems.AddAsync(item, cancellationToken).AsTask();
     }
 
+    public Task RemoveAsync(TodoItem item, CancellationToken cancellationToken)
+    {
+        _dbContext.TodoItems.Remove(item);
+        return Task.CompletedTask;
+    }
+
     public Task<int> SaveChangesAsync(CancellationToken cancellationToken)
     {
         return _dbContext.SaveChangesAsync(cancellationToken);

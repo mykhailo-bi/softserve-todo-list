@@ -1,28 +1,34 @@
 using TodoList.Application.Abstractions.Persistence;
-using TodoList.Application.TodoItems.Commands.CreateTodoItem;
+using TodoList.Application.TodoItems.Commands.ChangeTodoItemStatus;
 using TodoList.Domain.Entities;
+using TodoList.Domain.Enums;
 
 namespace TodoList.Application.Tests.TodoItems.Commands;
 
-public class CreateTodoItemCommandHandlerTests
+public class ChangeTodoItemStatusCommandHandlerTests
 {
     [Fact]
-    public async Task Handle_ShouldCreateItem_WhenTitleIsValid()
+    public async Task Handle_ShouldUpdateStatus_WhenItemExists()
     {
         var repository = new InMemoryTodoItemRepository();
-        var handler = new CreateTodoItemCommandHandler(repository);
+        var item = new TodoItem("Title", null, null);
+        repository.Items.Add(item);
 
-        var result = await handler.Handle(
-            new CreateTodoItemCommand("Implement backend scaffold", "Initial CQRS command", DateTimeOffset.UtcNow.AddDays(1)),
+        var handler = new ChangeTodoItemStatusCommandHandler(repository);
+
+        await handler.Handle(
+            new ChangeTodoItemStatusCommand(item.Id, TodoItemStatus.Done),
             CancellationToken.None);
 
-        Assert.NotEqual(Guid.Empty, result);
-        Assert.Single(repository.Items);
+        Assert.Equal(TodoItemStatus.Done, item.Status);
+        Assert.Equal(1, repository.SaveChangesCalls);
     }
 
     private sealed class InMemoryTodoItemRepository : IRepository<TodoItem>
     {
         public List<TodoItem> Items { get; } = new();
+
+        public int SaveChangesCalls { get; private set; }
 
         public Task<IEnumerable<TodoItem>> GetAllAsync(CancellationToken cancellationToken)
         {
@@ -48,6 +54,7 @@ public class CreateTodoItemCommandHandlerTests
 
         public Task<int> SaveChangesAsync(CancellationToken cancellationToken)
         {
+            SaveChangesCalls++;
             return Task.FromResult(1);
         }
     }

@@ -10,5 +10,7 @@ public interface IRepository<TEntity>
 
     Task AddAsync(TEntity item, CancellationToken cancellationToken);
 
+    Task RemoveAsync(TEntity item, CancellationToken cancellationToken);
+
     Task<int> SaveChangesAsync(CancellationToken cancellationToken);
 }
