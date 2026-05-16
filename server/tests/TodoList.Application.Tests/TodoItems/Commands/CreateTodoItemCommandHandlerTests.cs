@@ -1,3 +1,4 @@
+using Moq;
 using TodoList.Application.Abstractions.Persistence;
 using TodoList.Application.TodoItems.Commands.CreateTodoItem;
 using TodoList.Domain.Entities;
@@ -9,46 +10,15 @@ public class CreateTodoItemCommandHandlerTests
     [Fact]
     public async Task Handle_ShouldCreateItem_WhenTitleIsValid()
     {
-        var repository = new InMemoryTodoItemRepository();
-        var handler = new CreateTodoItemCommandHandler(repository);
+        var repository = new Mock<IRepository<TodoItem>>();
+        var handler = new CreateTodoItemCommandHandler(repository.Object);
 
         var result = await handler.Handle(
             new CreateTodoItemCommand("Implement backend scaffold", "Initial CQRS command", DateTimeOffset.UtcNow.AddDays(1)),
             CancellationToken.None);
 
         Assert.NotEqual(Guid.Empty, result);
-        Assert.Single(repository.Items);
-    }
-
-    private sealed class InMemoryTodoItemRepository : IRepository<TodoItem>
-    {
-        public List<TodoItem> Items { get; } = new();
-
-        public Task<IEnumerable<TodoItem>> GetAllAsync(CancellationToken cancellationToken)
-        {
-            return Task.FromResult(Items.AsEnumerable());
-        }
-
-        public Task<TodoItem?> GetByIdAsync(Guid id, CancellationToken cancellationToken)
-        {
-            return Task.FromResult(Items.FirstOrDefault(i => i.Id == id));
-        }
-
-        public Task AddAsync(TodoItem item, CancellationToken cancellationToken)
-        {
-            Items.Add(item);
-            return Task.CompletedTask;
-        }
-
-        public Task RemoveAsync(TodoItem item, CancellationToken cancellationToken)
-        {
-            Items.Remove(item);
-            return Task.CompletedTask;
-        }
-
-        public Task<int> SaveChangesAsync(CancellationToken cancellationToken)
-        {
-            return Task.FromResult(1);
-        }
+        repository.Verify(x => x.AddAsync(It.IsAny<TodoItem>(), It.IsAny<CancellationToken>()), Times.Once);
+        repository.Verify(x => x.SaveChangesAsync(It.IsAny<CancellationToken>()), Times.Once);
     }
 }
