@@ -29,6 +29,7 @@ describe('TodoFormDialogComponent', () => {
   };
 
   const setupComponent = (data: TodoItem | null = null) => {
+    TestBed.resetTestingModule();
     const mockDialogRef = {
       close: jest.fn(),
     };
@@ -87,14 +88,18 @@ describe('TodoFormDialogComponent', () => {
       expect(component.todoForm.valid).toBe(true);
     });
 
-    it('should dispatch createTodo action on submit', () => {
+it('should dispatch createTodo action on submit', () => {
       const dispatchSpy = jest.spyOn(store, 'dispatch');
+      const futureDate = new Date();
+      futureDate.setFullYear(futureDate.getFullYear() + 1);
       component.todoForm.patchValue({
         title: 'New Todo',
         description: 'New Description',
-        dueDate: new Date('2024-12-31'),
+        dueDate: futureDate,
       });
+      fixture.detectChanges();
 
+      expect(component.todoForm.valid).toBe(true);
       component.onSubmit();
 
       expect(dispatchSpy).toHaveBeenCalledWith(
@@ -135,14 +140,18 @@ describe('TodoFormDialogComponent', () => {
       expect(component.todoForm.value.dueDate).toBeInstanceOf(Date);
     });
 
-    it('should dispatch updateTodo action on submit', () => {
+it('should dispatch updateTodo action on submit', () => {
       const dispatchSpy = jest.spyOn(store, 'dispatch');
+      const futureDate = new Date();
+      futureDate.setFullYear(futureDate.getFullYear() + 1);
       component.todoForm.patchValue({
         title: 'Updated Todo',
         description: 'Updated Description',
-        dueDate: new Date('2024-12-31'),
+        dueDate: futureDate,
       });
+      fixture.detectChanges();
 
+      expect(component.todoForm.valid).toBe(true);
       component.onSubmit();
 
       expect(dispatchSpy).toHaveBeenCalledWith(

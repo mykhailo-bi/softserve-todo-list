@@ -3,6 +3,8 @@ import { provideRouter } from '@angular/router';
 import { provideLocationMocks } from '@angular/common/testing';
 import { provideMockStore, MockStore } from '@ngrx/store/testing';
 import { MatDialogModule, MatDialog } from '@angular/material/dialog';
+import { NoopAnimationsModule } from '@angular/platform-browser/animations';
+import { provideNativeDateAdapter } from '@angular/material/core';
 import { TodoListComponent } from './todo-list.component';
 import * as TodosActions from '../../store/todos/todos.actions';
 import * as TodosSelectors from '../../store/todos/todos.selectors';
@@ -45,10 +47,11 @@ describe('TodoListComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [TodoListComponent, MatDialogModule],
+      imports: [TodoListComponent, MatDialogModule, NoopAnimationsModule],
       providers: [
         provideRouter([]),
         provideLocationMocks(),
+        provideNativeDateAdapter(),
         provideMockStore({
           initialState,
           selectors: [

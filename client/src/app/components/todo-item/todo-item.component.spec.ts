@@ -1,6 +1,8 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { provideMockStore, MockStore } from '@ngrx/store/testing';
 import { MatDialogModule, MatDialog } from '@angular/material/dialog';
+import { NoopAnimationsModule } from '@angular/platform-browser/animations';
+import { provideNativeDateAdapter } from '@angular/material/core';
 import { signal } from '@angular/core';
 import { TodoItemComponent } from './todo-item.component';
 import { TodoItem } from '../../models/todo-item.model';
@@ -24,8 +26,8 @@ describe('TodoItemComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [TodoItemComponent, MatDialogModule],
-      providers: [provideMockStore()],
+      imports: [TodoItemComponent, MatDialogModule, NoopAnimationsModule],
+      providers: [provideMockStore(), provideNativeDateAdapter()],
     }).compileComponents();
 
     store = TestBed.inject(MockStore);
