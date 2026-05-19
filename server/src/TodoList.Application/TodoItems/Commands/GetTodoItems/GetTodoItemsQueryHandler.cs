@@ -15,6 +15,11 @@ public sealed class GetTodoItemsQueryHandler : IRequestHandler<GetTodoItemsQuery
 
     public async Task<IEnumerable<TodoItem>> Handle(GetTodoItemsQuery request, CancellationToken cancellationToken)
     {
-        return await _todoItemRepository.GetAllAsync(cancellationToken);
+        var items = await _todoItemRepository.GetAllAsync(cancellationToken);
+        if (request.Status.HasValue)
+        {
+            items = items.Where(i => i.Status == request.Status.Value);
+        }
+        return items;
     }
 }
