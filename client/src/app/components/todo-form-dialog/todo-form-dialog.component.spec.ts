@@ -7,6 +7,7 @@ import {
   MAT_DIALOG_DATA,
 } from '@angular/material/dialog';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
+import { provideNativeDateAdapter } from '@angular/material/core';
 import { TodoFormDialogComponent } from './todo-form-dialog.component';
 import { TodoItem } from '../../models/todo-item.model';
 import { TodoItemStatus } from '../../models/todo-item-status.enum';
@@ -41,6 +42,7 @@ describe('TodoFormDialogComponent', () => {
       ],
       providers: [
         provideMockStore(),
+        provideNativeDateAdapter(),
         { provide: MatDialogRef, useValue: mockDialogRef },
         { provide: MAT_DIALOG_DATA, useValue: data },
       ],
@@ -68,11 +70,11 @@ describe('TodoFormDialogComponent', () => {
       expect(component.isEditMode).toBe(false);
     });
 
-    it('should initialize empty form', () => {
+    it('should initialize empty form with today date', () => {
       expect(component.todoForm.value).toEqual({
         title: '',
         description: '',
-        dueDate: null,
+        dueDate: component.today,
       });
     });
 

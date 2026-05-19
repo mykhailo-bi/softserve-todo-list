@@ -37,10 +37,20 @@ export class TodoFormDialogComponent implements OnInit {
   private readonly fb = inject(FormBuilder);
   private readonly store = inject(Store);
   private readonly dialogRef = inject(MatDialogRef<TodoFormDialogComponent>);
-  protected readonly data = inject<TodoItem | null>(MAT_DIALOG_DATA);
+protected readonly data = inject<TodoItem | null>(MAT_DIALOG_DATA);
 
   protected todoForm!: FormGroup;
   protected isEditMode = false;
+  protected readonly today = new Date();
+
+  protected dateFilter = (date: Date | null): boolean => {
+    if (!date) return false;
+    const todayStart = new Date(this.today);
+    todayStart.setHours(0, 0, 0, 0);
+    const dateStart = new Date(date);
+    dateStart.setHours(0, 0, 0, 0);
+    return dateStart >= todayStart;
+  };
 
   ngOnInit(): void {
     this.isEditMode = !!this.data;
@@ -54,7 +64,7 @@ export class TodoFormDialogComponent implements OnInit {
         [Validators.required, Validators.maxLength(200)],
       ],
       description: [this.data?.description || '', [Validators.maxLength(1000)]],
-      dueDate: [this.data?.dueDate ? new Date(this.data.dueDate) : null],
+      dueDate: [this.data?.dueDate ? new Date(this.data.dueDate) : this.today],
     });
   }
 
