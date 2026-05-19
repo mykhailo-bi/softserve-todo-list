@@ -1,6 +1,8 @@
+using Microsoft.EntityFrameworkCore;
 using Serilog;
 using TodoList.Application.Common;
 using TodoList.Infrastructure;
+using TodoList.Infrastructure.Persistence;
 
 DotNetEnv.Env.TraversePath().Load();
 
@@ -46,5 +48,11 @@ app.UseAuthentication();
 app.UseAuthorization();
 
 app.MapControllers();
+
+using (var scope = app.Services.CreateScope())
+{
+    var dbContext = scope.ServiceProvider.GetRequiredService<ApplicationDbContext>();
+    dbContext.Database.Migrate();
+}
 
 app.Run();
