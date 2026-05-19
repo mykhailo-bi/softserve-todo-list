@@ -23,7 +23,6 @@ public class TodoItemRepository : IRepository<TodoItem>
     public Task<TodoItem?> GetByIdAsync(Guid id, CancellationToken cancellationToken)
     {
         return _dbContext.TodoItems
-            .AsNoTracking()
             .Where(i => i.Id == id)
             .FirstOrDefaultAsync(cancellationToken);
     }
