@@ -22,7 +22,7 @@ public class TodoItemsController : ControllerBase
     }
 
     [HttpGet]
-    public async Task<ActionResult<IEnumerable<TodoItem>>> GetAll(GetTodoItemsQuery query, CancellationToken cancellationToken)
+    public async Task<ActionResult<IEnumerable<TodoItem>>> GetAll([FromQuery] GetTodoItemsQuery query, CancellationToken cancellationToken)
     {
         var items = await _sender.Send(query, cancellationToken);
         return Ok(items);
