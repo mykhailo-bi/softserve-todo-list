@@ -1,4 +1,6 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { provideRouter } from '@angular/router';
+import { provideLocationMocks } from '@angular/common/testing';
 import { provideMockStore, MockStore } from '@ngrx/store/testing';
 import { MatDialogModule, MatDialog } from '@angular/material/dialog';
 import { TodoListComponent } from './todo-list.component';
@@ -6,7 +8,6 @@ import * as TodosActions from '../../store/todos/todos.actions';
 import * as TodosSelectors from '../../store/todos/todos.selectors';
 import { TodoItemStatus } from '../../models/todo-item-status.enum';
 import { TodoItem } from '../../models/todo-item.model';
-import { signal } from '@angular/core';
 
 describe('TodoListComponent', () => {
   let component: TodoListComponent;
@@ -46,6 +47,8 @@ describe('TodoListComponent', () => {
     await TestBed.configureTestingModule({
       imports: [TodoListComponent, MatDialogModule],
       providers: [
+        provideRouter([]),
+        provideLocationMocks(),
         provideMockStore({
           initialState,
           selectors: [

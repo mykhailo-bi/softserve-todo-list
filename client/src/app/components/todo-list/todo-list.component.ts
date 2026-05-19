@@ -1,6 +1,7 @@
-import { Component, inject, OnInit, signal } from '@angular/core';
+import { Component, inject, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Store } from '@ngrx/store';
+import { Router, ActivatedRoute } from '@angular/router';
 import { MatCardModule } from '@angular/material/card';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
@@ -34,6 +35,8 @@ import {
 })
 export class TodoListComponent implements OnInit {
   private readonly store = inject(Store);
+  private readonly router = inject(Router);
+  private readonly route = inject(ActivatedRoute);
   private readonly dialog = inject(MatDialog);
 
   protected readonly todos$ = this.store.select(
@@ -54,11 +57,24 @@ export class TodoListComponent implements OnInit {
   ) as TodoItemStatus[];
 
   ngOnInit(): void {
+    const statusParam = this.route.snapshot.queryParamMap.get('status');
+    if (statusParam !== null) {
+      const status = Number(statusParam) as TodoItemStatus;
+      if (this.statusOptions.includes(status)) {
+        this.store.dispatch(TodosActions.setStatusFilter({ status }));
+      }
+    }
+
     this.store.dispatch(TodosActions.loadTodos({}));
   }
 
   onFilterChange(status: TodoItemStatus | null): void {
     this.store.dispatch(TodosActions.setStatusFilter({ status }));
+    const queryParams: Record<string, string> = {};
+    if (status !== null) {
+      queryParams['status'] = String(status);
+    }
+    this.router.navigate([], { queryParams });
   }
 
   onAddClick(): void {
