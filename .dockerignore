@@ -1,0 +1,12 @@
+.git/
+.gitignore
+*.md
+node_modules/
+bin/
+obj/
+.vs/
+*.user
+*.suo
+dist/
+.angular/
+coverage/
