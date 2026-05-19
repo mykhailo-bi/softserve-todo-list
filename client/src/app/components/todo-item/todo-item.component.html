@@ -1,0 +1,74 @@
+<mat-card class="todo-card">
+  <mat-card-header>
+    <mat-card-title class="todo-title">
+      <mat-icon [class]="getStatusClass(todo().status)">
+        {{ getStatusIcon(todo().status) }}
+      </mat-icon>
+      <span>{{ todo().title }}</span>
+    </mat-card-title>
+    <div class="card-actions">
+      <button mat-icon-button [matMenuTriggerFor]="menu">
+        <mat-icon>more_vert</mat-icon>
+      </button>
+      <mat-menu #menu="matMenu">
+        <button mat-menu-item (click)="onEdit()">
+          <mat-icon>edit</mat-icon>
+          <span>Edit</span>
+        </button>
+        <button mat-menu-item (click)="onDelete()">
+          <mat-icon>delete</mat-icon>
+          <span>Delete</span>
+        </button>
+      </mat-menu>
+    </div>
+  </mat-card-header>
+
+  <mat-card-content>
+    @if (todo().description) {
+      <p class="todo-description">{{ todo().description }}</p>
+    }
+
+    <div class="todo-meta">
+      <mat-chip-set>
+        <mat-chip [class]="getStatusClass(todo().status)">
+          {{ statusLabels[todo().status] }}
+        </mat-chip>
+      </mat-chip-set>
+
+      <div class="due-date" [class.overdue]="isOverdue(todo().dueDate)">
+        <mat-icon>calendar_today</mat-icon>
+        <span>{{ formatDate(todo().dueDate) }}</span>
+      </div>
+    </div>
+  </mat-card-content>
+
+  <mat-card-actions>
+    <button
+      mat-button
+      color="primary"
+      (click)="onStatusChange(TodoItemStatus.Todo)"
+      [disabled]="todo().status === TodoItemStatus.Todo"
+    >
+      <mat-icon>radio_button_unchecked</mat-icon>
+      To Do
+    </button>
+    <button
+      mat-button
+      color="primary"
+      (click)="onStatusChange(TodoItemStatus.InProgress)"
+      [disabled]="todo().status === TodoItemStatus.InProgress"
+    >
+      <mat-icon>pending</mat-icon>
+      In Progress
+    </button>
+    <button
+      mat-button
+      color="primary"
+      (click)="onStatusChange(TodoItemStatus.Done)"
+      [disabled]="todo().status === TodoItemStatus.Done"
+    >
+      <mat-icon>check_circle</mat-icon>
+      Done
+    </button>
+  </mat-card-actions>
+</mat-card>

@@ -1,0 +1,127 @@
+.todo-card {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
+
+  &:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  }
+
+  mat-card-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    padding: 16px 16px 8px;
+  }
+
+  .todo-title {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    font-size: 18px;
+    font-weight: 500;
+    flex: 1;
+
+    mat-icon {
+      font-size: 24px;
+      width: 24px;
+      height: 24px;
+    }
+
+    span {
+      word-break: break-word;
+    }
+  }
+
+  .card-actions {
+    margin-left: 8px;
+  }
+
+  mat-card-content {
+    flex: 1;
+    padding: 8px 16px 16px;
+  }
+
+  .todo-description {
+    color: rgba(0, 0, 0, 0.6);
+    margin: 0 0 16px;
+    line-height: 1.5;
+    word-break: break-word;
+  }
+
+  .todo-meta {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 12px;
+    flex-wrap: wrap;
+  }
+
+  .due-date {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    color: rgba(0, 0, 0, 0.6);
+    font-size: 14px;
+
+    &.overdue {
+      color: #d32f2f;
+      font-weight: 500;
+    }
+
+    mat-icon {
+      font-size: 18px;
+      width: 18px;
+      height: 18px;
+    }
+  }
+
+  mat-card-actions {
+    display: flex;
+    justify-content: space-between;
+    padding: 8px;
+    border-top: 1px solid rgba(0, 0, 0, 0.12);
+
+    button {
+      flex: 1;
+      font-size: 12px;
+
+      mat-icon {
+        font-size: 18px;
+        width: 18px;
+        height: 18px;
+        margin-right: 4px;
+      }
+    }
+  }
+}
+
+.status-todo {
+  color: #757575;
+}
+
+.status-in-progress {
+  color: #fb8c00;
+}
+
+.status-done {
+  color: #43a047;
+}
+
+mat-chip {
+  &.status-todo {
+    background-color: #e0e0e0;
+  }
+
+  &.status-in-progress {
+    background-color: #fff3e0;
+    color: #e65100;
+  }
+
+  &.status-done {
+    background-color: #e8f5e9;
+    color: #2e7d32;
+  }
+}

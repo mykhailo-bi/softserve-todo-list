@@ -7,5 +7,6 @@
     "esModuleInterop": true,
     "types": ["jest", "node"]
   },
-  "include": ["src/**/*.d.ts", "src/**/*.spec.ts", "setup-jest.ts"]
+  "files": ["setup-jest.ts"],
+  "include": ["src/**/*.d.ts", "src/**/*.spec.ts"]
 }

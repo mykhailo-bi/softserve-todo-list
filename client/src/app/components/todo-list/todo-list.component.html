@@ -1,0 +1,65 @@
+<div class="todo-list-container">
+  <mat-card class="header-card">
+    <mat-card-header>
+      <mat-card-title>
+        <h1>Todo List</h1>
+      </mat-card-title>
+    </mat-card-header>
+    <mat-card-content>
+      <div class="toolbar">
+        <mat-form-field appearance="outline" class="filter-field">
+          <mat-label>Filter by Status</mat-label>
+          <mat-select
+            [value]="statusFilter$ | async"
+            (selectionChange)="onFilterChange($event.value)"
+          >
+            <mat-option [value]="null">All</mat-option>
+            @for (status of statusOptions; track status) {
+              <mat-option [value]="status">
+                {{ statusLabels[status] }}
+              </mat-option>
+            }
+          </mat-select>
+        </mat-form-field>
+        <button
+          mat-raised-button
+          color="primary"
+          (click)="onAddClick()"
+          class="add-button"
+        >
+          <mat-icon>add</mat-icon>
+          Add Task
+        </button>
+      </div>
+    </mat-card-content>
+  </mat-card>
+
+  @if (loading$ | async) {
+    <div class="loading-spinner">
+      <mat-spinner></mat-spinner>
+    </div>
+  }
+
+  @if (error$ | async; as error) {
+    <mat-card class="error-card">
+      <mat-card-content>
+        <p class="error-message">{{ error }}</p>
+      </mat-card-content>
+    </mat-card>
+  }
+
+  <div class="todos-grid">
+    @for (todo of todos$ | async; track todo.id) {
+      <app-todo-item [todo]="todo"></app-todo-item>
+    } @empty {
+      @if (!(loading$ | async)) {
+        <mat-card class="empty-state">
+          <mat-card-content>
+            <mat-icon class="empty-icon">inbox</mat-icon>
+            <p>No tasks found. Add a new task to get started!</p>
+          </mat-card-content>
+        </mat-card>
+      }
+    }
+  </div>
+</div>
