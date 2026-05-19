@@ -16,7 +16,6 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';
 import { MatDatepickerModule } from '@angular/material/datepicker';
-import { MatNativeDateModule } from '@angular/material/core';
 import { TodoItem } from '../../models/todo-item.model';
 import * as TodosActions from '../../store/todos/todos.actions';
 
@@ -30,7 +29,6 @@ import * as TodosActions from '../../store/todos/todos.actions';
     MatInputModule,
     MatButtonModule,
     MatDatepickerModule,
-    MatNativeDateModule,
   ],
   templateUrl: './todo-form-dialog.component.html',
   styleUrl: './todo-form-dialog.component.scss',
