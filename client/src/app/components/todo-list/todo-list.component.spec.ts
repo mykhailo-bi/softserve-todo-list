@@ -42,6 +42,7 @@ describe('TodoListComponent', () => {
       loading: false,
       error: null,
       statusFilter: null,
+      searchTerm: '',
     },
   };
 
@@ -59,6 +60,7 @@ describe('TodoListComponent', () => {
             { selector: TodosSelectors.selectTodosLoading, value: false },
             { selector: TodosSelectors.selectTodosError, value: null },
             { selector: TodosSelectors.selectStatusFilter, value: null },
+            { selector: TodosSelectors.selectSearchTerm, value: '' },
           ],
         }),
       ],
@@ -138,6 +140,17 @@ describe('TodoListComponent', () => {
       expect(dispatchSpy).toHaveBeenCalledWith(
         TodosActions.setStatusFilter({ status: null }),
       );
+    });
+  });
+
+  describe('onSearchChange', () => {
+    it('should emit value through searchSubject', () => {
+      const nextSpy = jest.spyOn((component as any).searchSubject, 'next');
+      const term = 'groceries';
+
+      component.onSearchChange(term);
+
+      expect(nextSpy).toHaveBeenCalledWith(term);
     });
   });
 

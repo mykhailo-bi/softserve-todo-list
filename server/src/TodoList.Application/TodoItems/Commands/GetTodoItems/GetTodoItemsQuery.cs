@@ -4,4 +4,4 @@ using TodoList.Domain.Enums;
 
 namespace TodoList.Application.TodoItems.Commands.GetTodoItems;
 
-public sealed record GetTodoItemsQuery(TodoItemStatus? Status = null) : IRequest<IEnumerable<TodoItem>>;
+public sealed record GetTodoItemsQuery(TodoItemStatus? Status = null, string? SearchTerm = null) : IRequest<IEnumerable<TodoItem>>;

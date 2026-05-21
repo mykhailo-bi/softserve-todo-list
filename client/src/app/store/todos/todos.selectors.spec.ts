@@ -36,6 +36,7 @@ describe('TodosSelectors', () => {
     loading: false,
     error: null,
     statusFilter: null,
+    searchTerm: '',
   };
 
   describe('selectAllTodos', () => {
@@ -72,6 +73,40 @@ describe('TodosSelectors', () => {
       const result =
         TodosSelectors.selectFilteredTodos.projector(stateWithFilter);
       expect(result.length).toBe(0);
+    });
+
+    it('should filter todos by search term (case-insensitive)', () => {
+      const stateWithSearch: TodosState = {
+        ...mockState,
+        searchTerm: 'todo 2',
+      };
+      const result =
+        TodosSelectors.selectFilteredTodos.projector(stateWithSearch);
+      expect(result.length).toBe(1);
+      expect(result[0].title).toBe('Todo 2');
+    });
+
+    it('should return empty when search term matches no todos', () => {
+      const stateWithSearch: TodosState = {
+        ...mockState,
+        searchTerm: 'nonexistent',
+      };
+      const result =
+        TodosSelectors.selectFilteredTodos.projector(stateWithSearch);
+      expect(result.length).toBe(0);
+    });
+
+    it('should combine status filter and search term', () => {
+      const stateWithBoth: TodosState = {
+        ...mockState,
+        statusFilter: TodoItemStatus.Todo,
+        searchTerm: 'Todo',
+      };
+      const result =
+        TodosSelectors.selectFilteredTodos.projector(stateWithBoth);
+      expect(result.length).toBe(1);
+      expect(result[0].title).toBe('Todo 1');
+      expect(result[0].status).toBe(TodoItemStatus.Todo);
     });
   });
 
@@ -118,6 +153,22 @@ describe('TodosSelectors', () => {
       const result =
         TodosSelectors.selectStatusFilter.projector(filteredState);
       expect(result).toBe(TodoItemStatus.Done);
+    });
+  });
+
+  describe('selectSearchTerm', () => {
+    it('should select search term', () => {
+      const result = TodosSelectors.selectSearchTerm.projector(mockState);
+      expect(result).toBe('');
+    });
+
+    it('should select search term when set', () => {
+      const searchState: TodosState = {
+        ...mockState,
+        searchTerm: 'groceries',
+      };
+      const result = TodosSelectors.selectSearchTerm.projector(searchState);
+      expect(result).toBe('groceries');
     });
   });
 

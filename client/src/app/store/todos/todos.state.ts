@@ -6,6 +6,7 @@ export interface TodosState {
   loading: boolean;
   error: string | null;
   statusFilter: TodoItemStatus | null;
+  searchTerm: string;
 }
 
 export const initialState: TodosState = {
@@ -13,4 +14,5 @@ export const initialState: TodosState = {
   loading: false,
   error: null,
   statusFilter: null,
+  searchTerm: '',
 };

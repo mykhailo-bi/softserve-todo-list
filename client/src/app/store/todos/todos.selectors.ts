@@ -11,10 +11,17 @@ export const selectAllTodos = createSelector(
 export const selectFilteredTodos = createSelector(
   selectTodosState,
   (state) => {
-    if (state.statusFilter === null) {
-      return state.todos;
+    let filtered = state.todos;
+    if (state.statusFilter !== null) {
+      filtered = filtered.filter((todo) => todo.status === state.statusFilter);
     }
-    return state.todos.filter((todo) => todo.status === state.statusFilter);
+    if (state.searchTerm) {
+      const term = state.searchTerm.toLowerCase();
+      filtered = filtered.filter((todo) =>
+        todo.title.toLowerCase().includes(term),
+      );
+    }
+    return filtered;
   },
 );
 
@@ -31,6 +38,11 @@ export const selectTodosError = createSelector(
 export const selectStatusFilter = createSelector(
   selectTodosState,
   (state) => state.statusFilter,
+);
+
+export const selectSearchTerm = createSelector(
+  selectTodosState,
+  (state) => state.searchTerm,
 );
 
 export const selectTodoById = (id: string) =>

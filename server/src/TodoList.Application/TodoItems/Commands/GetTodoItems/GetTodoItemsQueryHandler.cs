@@ -20,6 +20,10 @@ public sealed class GetTodoItemsQueryHandler : IRequestHandler<GetTodoItemsQuery
         {
             items = items.Where(i => i.Status == request.Status.Value);
         }
+        if (!string.IsNullOrWhiteSpace(request.SearchTerm))
+        {
+            items = items.Where(i => i.Title.Contains(request.SearchTerm, StringComparison.OrdinalIgnoreCase));
+        }
         return items;
     }
 }

@@ -149,4 +149,30 @@ describe('TodosReducer', () => {
       expect(state.statusFilter).toBeNull();
     });
   });
+
+  describe('setSearchTerm', () => {
+    it('should set search term', () => {
+      const searchTerm = 'groceries';
+      const action = TodosActions.setSearchTerm({ searchTerm });
+      const state = todosReducer(initialState, action);
+
+      expect(state.searchTerm).toBe(searchTerm);
+    });
+
+    it('should update search term', () => {
+      const stateWithTerm = { ...initialState, searchTerm: 'old' };
+      const action = TodosActions.setSearchTerm({ searchTerm: 'new' });
+      const state = todosReducer(stateWithTerm, action);
+
+      expect(state.searchTerm).toBe('new');
+    });
+
+    it('should clear search term', () => {
+      const stateWithTerm = { ...initialState, searchTerm: 'something' };
+      const action = TodosActions.setSearchTerm({ searchTerm: '' });
+      const state = todosReducer(stateWithTerm, action);
+
+      expect(state.searchTerm).toBe('');
+    });
+  });
 });

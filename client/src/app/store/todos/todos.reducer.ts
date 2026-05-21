@@ -96,4 +96,8 @@ export const todosReducer = createReducer(
     ...state,
     statusFilter: status,
   })),
+  on(TodosActions.setSearchTerm, (state, { searchTerm }) => ({
+    ...state,
+    searchTerm,
+  })),
 );

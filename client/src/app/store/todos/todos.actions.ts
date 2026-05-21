@@ -78,3 +78,8 @@ export const setStatusFilter = createAction(
   '[Todo List] Set Status Filter',
   props<{ status: TodoItemStatus | null }>(),
 );
+
+export const setSearchTerm = createAction(
+  '[Todo List] Set Search Term',
+  props<{ searchTerm: string }>(),
+);
